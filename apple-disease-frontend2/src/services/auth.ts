@@ -1,5 +1,6 @@
 import { setAuth } from '@/utils/auth';
-const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // this is "/api"
+
 
 export interface LoginRequest {
   email: string;
@@ -62,6 +63,7 @@ export const authService = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+         'Accept': 'application/json', 
       },
       body: JSON.stringify(data),
     });
