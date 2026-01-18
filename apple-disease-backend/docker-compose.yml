@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   apple-postgres:
     image: postgres:15
@@ -31,6 +29,14 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
       SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Kolkata
+      ML_API_URL: http://apple-ml:5000/predict
+
+  apple-ml:
+    build:
+      context: ./ml
+    container_name: apple-ml
+    ports:
+      - "5000:5000"
 
 volumes:
   postgres_data:
