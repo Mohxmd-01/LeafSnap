@@ -59,13 +59,16 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    console.log('Form submitted with:', { name, email, password: '***', confirmPassword: '***' });
 
     if (!passwordsMatch) {
+      console.log('Passwords do not match');
       setError('Passwords do not match');
       return;
     }
 
     if (password.length < 8) {
+      console.log('Password too short');
       setError('Password must be at least 8 characters');
       return;
     }
@@ -73,7 +76,9 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
+      console.log('Calling authService.signup...');
       await authService.signup({ name, email, password });
+      console.log('Signup successful, navigating to login...');
       
       toast({
         title: 'Account created!',
@@ -82,6 +87,7 @@ export default function Signup() {
       
       navigate('/login');
     } catch (err) {
+      console.error('Signup error:', err);
       setError(err instanceof Error ? err.message : 'Signup failed. Please try again.');
     } finally {
       setIsLoading(false);

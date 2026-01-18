@@ -15,6 +15,7 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {
     "http://localhost:5173",
+    "http://localhost:8080",
     "http://apple-frontend"
 })
 public class AuthController {

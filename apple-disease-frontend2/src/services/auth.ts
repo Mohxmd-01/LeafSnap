@@ -45,10 +45,16 @@ export const authService = {
     });
 
     if (!response.ok) {
-      const error: AuthError = await response.json().catch(() => ({
-        message: 'Login failed. Please check your credentials.',
-      }));
-      throw new Error(error.message);
+      let errorMessage = 'Login failed. Please check your credentials.';
+      try {
+        const errorData = await response.json();
+        if (errorData.message) {
+          errorMessage = errorData.message;
+        }
+      } catch (e) {
+        console.error('Error parsing error response:', e);
+      }
+      throw new Error(errorMessage);
     }
 
     const result: LoginResponse = await response.json();
@@ -59,6 +65,9 @@ export const authService = {
   },
 
   async signup(data: SignupRequest): Promise<SignupResponse> {
+    console.log('Sending signup request:', data);
+    console.log('API URL:', `${API_BASE_URL}/auth/signup`);
+    
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       method: 'POST',
       headers: {
@@ -68,14 +77,26 @@ export const authService = {
       body: JSON.stringify(data),
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response ok:', response.ok);
+
     if (!response.ok) {
-      const error: AuthError = await response.json().catch(() => ({
-        message: 'Signup failed. Please try again.',
-      }));
-      throw new Error(error.message);
+      let errorMessage = 'Signup failed. Please try again.';
+      try {
+        const errorData = await response.json();
+        console.log('Error response:', errorData);
+        if (errorData.message) {
+          errorMessage = errorData.message;
+        }
+      } catch (e) {
+        console.error('Error parsing error response:', e);
+      }
+      throw new Error(errorMessage);
     }
 
-    return response.json();
+    const result = await response.json();
+    console.log('Success response:', result);
+    return result;
   },
 
   async forgotPassword(data: ForgotPasswordRequest): Promise<void> {
