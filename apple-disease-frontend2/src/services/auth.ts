@@ -7,8 +7,8 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
-  user?: {
-    id: string;
+  user: {
+    id: number;
     email: string;
     name: string;
   };
@@ -43,13 +43,19 @@ export const authService = {
     });
 
     if (!response.ok) {
-      const error: AuthError = await response.json().catch(() => ({ 
-        message: 'Login failed. Please check your credentials.' 
+      const error: AuthError = await response.json().catch(() => ({
+        message: 'Login failed. Please check your credentials.',
       }));
-      throw new Error(error.message || 'Login failed. Please try again.');
+      throw new Error(error.message);
     }
 
-    return response.json();
+    const result: LoginResponse = await response.json();
+
+    // ✅ STORE TOKEN & USER (THIS WAS MISSING)
+    localStorage.setItem('token', result.token);
+    localStorage.setItem('user', JSON.stringify(result.user));
+
+    return result;
   },
 
   async signup(data: SignupRequest): Promise<SignupResponse> {
@@ -62,28 +68,37 @@ export const authService = {
     });
 
     if (!response.ok) {
-      const error: AuthError = await response.json().catch(() => ({ 
-        message: 'Signup failed. Please try again.' 
+      const error: AuthError = await response.json().catch(() => ({
+        message: 'Signup failed. Please try again.',
       }));
-      throw new Error(error.message || 'Signup failed. Please try again.');
+      throw new Error(error.message);
     }
 
     return response.json();
   },
 
   async forgotPassword(data: ForgotPasswordRequest): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/forgot-password`, {
+    await fetch(`${API_BASE_URL}/forgot-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     });
+  },
 
-    // Always return success to prevent email enumeration
-    if (!response.ok) {
-      // Log error internally but don't expose to user
-      console.error('Forgot password request failed');
-    }
+  // 🔓 OPTIONAL HELPERS
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  },
+
+  getToken() {
+    return localStorage.getItem('token');
+  },
+
+  getUser() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   },
 };
