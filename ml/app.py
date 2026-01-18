@@ -57,7 +57,7 @@ def prepare_image(image):
 def health():
     return jsonify({"status": "ok"})
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def home():
     return jsonify({
         "status": "Apple Disease Prediction API is running"
@@ -99,7 +99,8 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 # =====================================
-# RUN SERVER
+# RUN SERVER (RENDER / DOCKER SAFE)
 # =====================================
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
