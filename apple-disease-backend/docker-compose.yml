@@ -1,14 +1,17 @@
+version: '3.9'
+
 services:
-  apple-mysql:
-    image: mysql:8.0
-    container_name: apple-mysql
+  apple-postgres:
+    image: postgres:15
+    container_name: apple-postgres
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: apple_disease
+      POSTGRES_DB: leafsnap
+      POSTGRES_USER: leafsnap_user
+      POSTGRES_PASSWORD: T0fEiuzSqaIpEeMd7QS2MYjfsZD4UZMA
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U leafsnap_user"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -19,8 +22,15 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      apple-mysql:
+      apple-postgres:
         condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://apple-postgres:5432/leafsnap
+      SPRING_DATASOURCE_USERNAME: leafsnap_user
+      SPRING_DATASOURCE_PASSWORD: T0fEiuzSqaIpEeMd7QS2MYjfsZD4UZMA
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Kolkata
 
 volumes:
-  mysql_data:
+  postgres_data:

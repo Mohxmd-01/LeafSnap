@@ -24,8 +24,3 @@ __pycache__/
 *.log
 *.sqlite3
 
-
-# Large models
-*.pkl
-*.h5
-*.pt
