@@ -36,7 +36,7 @@ export interface AuthError {
 
 export const authService = {
   async login(data: LoginRequest): Promise<LoginResponse> {
-    const response = await fetch(`${API_BASE_URL}/login`, {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export const authService = {
   },
 
   async signup(data: SignupRequest): Promise<SignupResponse> {
-    const response = await fetch(`${API_BASE_URL}/signup`, {
+    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export const authService = {
   },
 
   async forgotPassword(data: ForgotPasswordRequest): Promise<void> {
-    await fetch(`${API_BASE_URL}/forgot-password`, {
+    await fetch(`${API_BASE_URL}/auth/forgot-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
