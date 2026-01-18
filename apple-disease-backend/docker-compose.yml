@@ -1,0 +1,26 @@
+services:
+  apple-mysql:
+    image: mysql:8.0
+    container_name: apple-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: apple_disease
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  apple-backend:
+    build: .
+    container_name: apple-backend
+    ports:
+      - "8081:8081"
+    depends_on:
+      apple-mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

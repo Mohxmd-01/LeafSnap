@@ -1,0 +1,6 @@
+# ML datasets
+Dataset/
+data/
+images/
+*.zip
+*.tar.gz

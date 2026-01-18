@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apple Disease Prediction System - Design System
+   Agriculture-themed modern dashboard with dark mode support
+   All colors are HSL.
+*/
+
+@layer base {
+  :root {
+    /* Light mode - Fresh, professional agriculture theme */
+    --background: 120 20% 98%;
+    --foreground: 150 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 10%;
+
+    /* Primary - Fresh Green */
+    --primary: 142 70% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Sage */
+    --secondary: 140 25% 94%;
+    --secondary-foreground: 150 30% 15%;
+
+    --muted: 140 15% 95%;
+    --muted-foreground: 150 15% 40%;
+
+    /* Accent - Emerald highlight */
+    --accent: 158 60% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Warning - Amber for low confidence */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    /* Success - Bright green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 140 20% 88%;
+    --input: 140 20% 88%;
+    --ring: 142 70% 35%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar - Darker professional look */
+    --sidebar-background: 150 25% 12%;
+    --sidebar-foreground: 140 15% 85%;
+    --sidebar-primary: 142 70% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 150 20% 18%;
+    --sidebar-accent-foreground: 140 15% 95%;
+    --sidebar-border: 150 15% 20%;
+    --sidebar-ring: 142 70% 45%;
+
+    /* Chart colors */
+    --chart-1: 142 70% 35%;
+    --chart-2: 158 60% 45%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 0 72% 51%;
+    --chart-5: 199 89% 48%;
+  }
+
+  .dark {
+    /* Dark mode - Professional dashboard */
+    --background: 150 20% 6%;
+    --foreground: 140 15% 95%;
+
+    --card: 150 20% 9%;
+    --card-foreground: 140 15% 95%;
+
+    --popover: 150 20% 9%;
+    --popover-foreground: 140 15% 95%;
+
+    /* Primary - Brighter green for dark mode */
+    --primary: 142 70% 50%;
+    --primary-foreground: 150 30% 5%;
+
+    --secondary: 150 15% 15%;
+    --secondary-foreground: 140 15% 90%;
+
+    --muted: 150 15% 15%;
+    --muted-foreground: 140 10% 60%;
+
+    --accent: 158 60% 50%;
+    --accent-foreground: 150 30% 5%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --warning: 38 92% 55%;
+    --warning-foreground: 0 0% 10%;
+
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 10%;
+
+    --border: 150 15% 18%;
+    --input: 150 15% 18%;
+    --ring: 142 70% 50%;
+
+    /* Sidebar - Deep dark green */
+    --sidebar-background: 150 30% 5%;
+    --sidebar-foreground: 140 15% 85%;
+    --sidebar-primary: 142 70% 50%;
+    --sidebar-primary-foreground: 150 30% 5%;
+    --sidebar-accent: 150 20% 12%;
+    --sidebar-accent-foreground: 140 15% 95%;
+    --sidebar-border: 150 15% 15%;
+    --sidebar-ring: 142 70% 50%;
+
+    /* Chart colors - Brighter for dark mode */
+    --chart-1: 142 70% 50%;
+    --chart-2: 158 60% 55%;
+    --chart-3: 38 92% 55%;
+    --chart-4: 0 62% 55%;
+    --chart-5: 199 89% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-muted rounded-full;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full hover:bg-muted-foreground/50;
+  }
+
+  /* Futuristic background animations */
+  @keyframes blob {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(20px, -30px) scale(1.1);
+    }
+    50% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+    75% {
+      transform: translate(30px, 10px) scale(1.05);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-40px) translateX(-10px);
+      opacity: 0.4;
+    }
+    75% {
+      transform: translateY(-20px) translateX(5px);
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.2;
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-blob {
+    animation: blob 8s infinite ease-in-out;
+  }
+
+  .animate-float {
+    animation: float 10s infinite ease-in-out;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s infinite ease-in-out;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .bg-radial-vignette {
+    background: radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)) 70%);
+  }
+}

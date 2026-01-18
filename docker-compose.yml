@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: apple-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: apple_disease
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ml:
+    build: ./ml
+    container_name: apple-ml
+    restart: always
+    ports:
+      - "5000:5000"
+
+  backend:
+    build: ./apple-disease-backend
+    container_name: apple-backend
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ml:
+        condition: service_started
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://apple-mysql:3306/apple_disease?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+      ML_API_URL: http://apple-ml:5000/predict
+
+  frontend:
+    build:
+      context: ./apple-disease-frontend2
+      args:
+        VITE_API_BASE_URL: http://localhost:8081/api
+    container_name: apple-frontend
+    restart: always
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
