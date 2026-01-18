@@ -1,18 +1,17 @@
-version: "3.9"
-
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: apple-mysql
+  postgres:
+    image: postgres:15
+    container_name: apple-postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: apple_disease
+      POSTGRES_DB: leafsnap
+      POSTGRES_USER: leafsnap_user
+      POSTGRES_PASSWORD: T0fEiuzSqaIpEeMd7QS2MYjfsZD4UZMA
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
+      test: ["CMD-SHELL", "pg_isready -U leafsnap_user"]
+      interval: 5s
       timeout: 5s
       retries: 5
 
@@ -28,23 +27,21 @@ services:
     container_name: apple-backend
     restart: always
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
       ml:
         condition: service_started
     ports:
       - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://apple-mysql:3306/apple_disease?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_URL: jdbc:postgresql://apple-postgres:5432/leafsnap
+      SPRING_DATASOURCE_USERNAME: leafsnap_user
+      SPRING_DATASOURCE_PASSWORD: T0fEiuzSqaIpEeMd7QS2MYjfsZD4UZMA
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       ML_API_URL: http://apple-ml:5000/predict
 
   frontend:
-    build:
-      context: ./apple-disease-frontend2
-      args:
-        VITE_API_BASE_URL: http://localhost:8081/api
+    build: ./apple-disease-frontend2
     container_name: apple-frontend
     restart: always
     ports:
@@ -53,4 +50,4 @@ services:
       - backend
 
 volumes:
-  mysql_data:
+  postgres_data:
