@@ -4,3 +4,22 @@ data/
 images/
 *.zip
 *.tar.gz
+
+
+# OS files
+.DS_Store
+Thumbs.db
+
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
