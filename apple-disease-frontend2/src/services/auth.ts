@@ -1,3 +1,4 @@
+import { setAuth } from '@/utils/auth';
 const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/auth`;
 
 export interface LoginRequest {
@@ -51,9 +52,7 @@ export const authService = {
 
     const result: LoginResponse = await response.json();
 
-    // ✅ STORE TOKEN & USER (THIS WAS MISSING)
-    localStorage.setItem('token', result.token);
-    localStorage.setItem('user', JSON.stringify(result.user));
+    setAuth(result.token, result.user);
 
     return result;
   },
@@ -85,20 +84,5 @@ export const authService = {
       },
       body: JSON.stringify(data),
     });
-  },
-
-  // 🔓 OPTIONAL HELPERS
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  },
-
-  getToken() {
-    return localStorage.getItem('token');
-  },
-
-  getUser() {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
   },
 };
