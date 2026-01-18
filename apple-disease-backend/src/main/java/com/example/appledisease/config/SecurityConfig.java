@@ -20,14 +20,17 @@ public class SecurityConfig {
                 var config = new org.springframework.web.cors.CorsConfiguration();
                 config.setAllowCredentials(true);
 
-                // ✅ Browser access
+                // ✅ Local development
                 config.addAllowedOrigin("http://localhost:5173");
+                config.addAllowedOrigin("http://127.0.0.1:5173");
+                config.addAllowedOrigin("http://localhost:8080");
+                config.addAllowedOrigin("http://localhost");
 
                 // ✅ Docker → Docker (NGINX → backend)
                 config.addAllowedOrigin("http://apple-frontend");
 
-                // (Optional but safe)
-                config.addAllowedOrigin("http://127.0.0.1:5173");
+                // ✅ Render deployment
+                config.addAllowedOriginPattern("https://.*\\.onrender\\.com");
 
                 config.addAllowedHeader("*");
                 config.addAllowedMethod("*");

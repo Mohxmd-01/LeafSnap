@@ -16,8 +16,15 @@ import java.util.Map;
 @CrossOrigin(origins = {
     "http://localhost:5173",
     "http://localhost:8080",
-    "http://apple-frontend"
-})
+    "http://localhost",
+    "http://127.0.0.1:5173",
+    "http://apple-frontend",
+    "https://leafsnap-frontend.onrender.com"
+},
+allowCredentials = "true",
+allowedHeaders = "*",
+methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+)
 public class AuthController {
 
     private final UserRepository userRepository;
