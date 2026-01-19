@@ -9,7 +9,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/predictions")
-@CrossOrigin
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "http://localhost",
+    "http://127.0.0.1:5173",
+    "http://apple-frontend",
+    "https://leaf-snap-kohl.vercel.app",
+    "https://leafsnap-ml.onrender.com"
+},
+allowCredentials = "true",
+allowedHeaders = "*",
+methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+)
 public class PredictionHistoryController {
 
     private final PredictionRepository repository;

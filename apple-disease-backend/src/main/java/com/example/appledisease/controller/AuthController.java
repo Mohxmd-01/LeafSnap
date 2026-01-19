@@ -19,8 +19,8 @@ import java.util.Map;
     "http://localhost",
     "http://127.0.0.1:5173",
     "http://apple-frontend",
-    "https://leafsnap-ml.onrender.com",
-    "https://leafsnap-frontend.onrender.com"
+    "https://leaf-snap-kohl.vercel.app",
+    "https://leafsnap-ml.onrender.com"
 },
 allowCredentials = "true",
 allowedHeaders = "*",
