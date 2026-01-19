@@ -39,18 +39,23 @@ public class SecurityConfig {
 
                 config.addAllowedHeader("*");
                 config.addAllowedMethod("*");
+                 config.addExposedHeader("Authorization");  // 🔥 ADD THIS
                 return config;
             }))
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/health",
-                    "/api/auth/**",
-                    "/api/predict",
-                    "/api/predictions"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
+    .requestMatchers(
+        "/",
+        "/health",
+        "/error",
+        "/api/auth/**",
+        "/api/predict",
+        "/api/predictions"
+    ).permitAll()
+    .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+    .anyRequest().authenticated()
+)
+
 
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
