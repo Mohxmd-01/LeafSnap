@@ -18,6 +18,7 @@ import java.io.IOException;
     "http://127.0.0.1:5173",
     "http://apple-frontend",
     "https://leaf-snap-kohl.vercel.app",
+    "https://leafsnap-backend.onrender.com",
     "https://leafsnap-ml.onrender.com"
 },
 allowCredentials = "true",

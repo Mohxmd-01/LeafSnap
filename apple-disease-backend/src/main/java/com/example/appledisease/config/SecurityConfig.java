@@ -29,7 +29,12 @@ public class SecurityConfig {
                 // ✅ Docker → Docker (NGINX → backend)
                 config.addAllowedOrigin("http://apple-frontend");
 
-                // ✅ Render deployment
+                // ✅ Render deployment - Frontend
+                config.addAllowedOrigin("https://leaf-snap-kohl.vercel.app");
+                config.addAllowedOriginPattern("https://.*\\.vercel\\.app");
+
+                // ✅ Render deployment - Backend (for direct access)
+                config.addAllowedOrigin("https://leafsnap-backend.onrender.com");
                 config.addAllowedOriginPattern("https://.*\\.onrender\\.com");
 
                 config.addAllowedHeader("*");
