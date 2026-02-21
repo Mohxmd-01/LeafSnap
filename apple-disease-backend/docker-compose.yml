@@ -1,9 +1,11 @@
 version: '3.9'
 
 services:
+
   apple-postgres:
     image: postgres:15
     container_name: apple-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: leafsnap
       POSTGRES_USER: leafsnap_user
@@ -13,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U leafsnap_user"]
+      test: ["CMD-SHELL", "pg_isready -U leafsnap_user -d leafsnap"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -21,19 +23,25 @@ services:
   apple-backend:
     build: .
     container_name: apple-backend
-    ports:
-      - "8081:8081"
+    restart: unless-stopped
     depends_on:
       apple-postgres:
         condition: service_healthy
+    ports:
+      - "8081:8081"
     environment:
-      DB_URL: jdbc:postgresql://apple-postgres:5432/leafsnap
-      DB_USERNAME: leafsnap_user
-      DB_PASSWORD: T0fEiuzSqaIpEeMd7QS2MYjfsZD4UZMA
-      ML_API_URL: http://apple-ml:5000/predict
+      SPRING_DATASOURCE_URL: jdbc:postgresql://apple-postgres:5432/leafsnap
+      SPRING_DATASOURCE_USERNAME: leafsnap_user
+      SPRING_DATASOURCE_PASSWORD: T0fEiuzSqaIpEeMd7QS2MYjfsZD4UZMA
+
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
       SPRING_JPA_PROPERTIES_HIBERNATE_JDBC_TIME_ZONE: Asia/Kolkata
+
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8081
+
+      ML_API_URL: http://localhost:5000/predict
 
 volumes:
   postgres_data:
