@@ -39,7 +39,12 @@ public class MlPredictionService {
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("image", file.getResource());
+        body.add("image", new org.springframework.core.io.ByteArrayResource(file.getBytes()) {
+    @Override
+    public String getFilename() {
+        return file.getOriginalFilename();
+    }
+});
 
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(body, headers);
